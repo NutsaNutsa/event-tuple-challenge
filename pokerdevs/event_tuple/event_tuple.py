@@ -27,7 +27,8 @@ class UserLongPressedEvent:
         event = cls.__new__(cls)
         event._event_id = ulid.new()
         event._event_type = "UserLongPressed"
-        event.y = y
+        event._x = x
+        event._y = y
         return event
 
     def timestamp(self):
