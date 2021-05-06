@@ -1,14 +1,14 @@
 import pytest
 import logging
-from pokerdevs.event_tuple import UserClickedOnButtonEvent, UserLongPressedEvent
+from pokerdevs.event_tuple import EventTuple
 
 
 logger = logging.getLogger(__name__)
 
 
 def generate_test_events():
-    yield UserClickedOnButtonEvent.create(button_id='close_button')
-    yield UserLongPressedEvent.create(x=340, y=420)
+    yield EventTuple("UserClickedOnButton", [('button_id', 'close_button'), ])
+    yield EventTuple("UserLongPressed", [('x', 340), ('y', 420)])
 
 def serialize_event(event):
 	return f"Event '{event.event_type()}' occurred at {event.timestamp()} with ID: {event.event_id()}"
