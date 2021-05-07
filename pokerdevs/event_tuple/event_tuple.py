@@ -1,13 +1,11 @@
 import ulid
 
-class UserClickedOnButtonEvent:
-    @classmethod
-    def create(cls, button_id):
-        event = cls.__new__(cls)
-        event._event_id = ulid.new()
-        event._event_type = "UserClickedOnButton"
-        event._button_id = button_id
-        return event
+class EventTuple:
+    def __init__(self, event_type, arg_list):
+        self._event_id = ulid.new()
+        self._event_type = event_type
+        for arg in arg_list:
+            setattr(self, arg[0], arg[1])
 
     def timestamp(self):
         return self._event_id.timestamp().int
@@ -18,30 +16,8 @@ class UserClickedOnButtonEvent:
     def event_type(self):
         return self._event_type
 
-    def button_id(self): 
-        return self._button_id
+    def get_attributes(self):
+        return self.__dict__.keys()
 
-class UserLongPressedEvent:
-    @classmethod
-    def create(cls, x, y):
-        event = cls.__new__(cls)
-        event._event_id = ulid.new()
-        event._event_type = "UserLongPressed"
-        event._x = x
-        event._y = y
-        return event
-
-    def timestamp(self):
-        return self._event_id.timestamp().int
-    
-    def event_id(self):
-        return self._event_id
-    
-    def event_type(self):
-        return self._event_type
-
-    def x(self): 
-        return self._x
-    
-    def y(self):
-        return self._y
+    def get_value(self, attribute_name):
+        return getattr(self, attribute_name)
