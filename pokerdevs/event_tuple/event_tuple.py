@@ -1,14 +1,17 @@
 import ulid
 
-
-class EventTuple:
-    def __init__(self, event_type, arg_list):
-        self._event_id = ulid.new()
-        self._event_type = event_type
+class EventTupleClass(tuple):
+    @classmethod
+    def create(cls, *args):
+        event = cls.__new__(cls)
+        event_type, arg_list = args
+        event._event_id = ulid.new()
+        event._event_type = event_type
 
         for arg in arg_list:
-            self.add_mutable_method(arg[0], arg[1])
-
+            event.add_mutable_method(arg[0], arg[1])
+        return event
+        
     def timestamp(self):
         return self._event_id.timestamp().int
     
@@ -31,4 +34,7 @@ class EventTuple:
 
         getter.__name__ = name
         setattr(self, "_" + name, value)
-        setattr(self, getter.__name__, getter)
+        setattr(self, getter.__name__, getter),
+
+def EventTuple(name, args):
+    return EventTupleClass().create(*[name, args])

@@ -34,3 +34,7 @@ def test_event_tuple():
             print(event.customer_id())
             print(event.product_id())
             print(event.quantity())
+
+def test_event_types():
+    for event in generate_test_events():
+        assert isinstance(event, tuple)
